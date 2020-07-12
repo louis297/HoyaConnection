@@ -17,6 +17,8 @@ services:
   nginx:
     image: nginx:stable-alpine
     ports:
+      # those ports are not directly link to ports in this file
+      # they are defined in the config file of nginx, see docker/nginx/HoyaConnection.conf
       - 8080:80
       - 443:443
     volumes:
@@ -36,7 +38,7 @@ services:
       dockerfile: ./docker/backend/Dockerfile
     environment: 
       - ASPNETCORE_ENVORIONMENT=Development
-      - ASPNETCORE_URLS=http://+:5000
+      # - ASPNETCORE_URLS=http://+:5000
     #   - ASPNETCORE_Kestrel__Certificates__Default__Password=wondering
     #   - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
     # volumes:
@@ -44,9 +46,9 @@ services:
     links:
       - postgres
       # - redis
-    ports:
-      - 5000:5000
-      - 5001:5001
+    # ports:
+    #   - 5000:5000
+    #   - 5001:5001
 
   frontend:
     stdin_open: true
@@ -76,7 +78,7 @@ services:
     volumes:
     - ./docker/postgres/data:/var/lib/postgresql
     - ./docker/postgres/init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh
-    container_name: postgres_db
+    # container_name: postgres_db
 
   # redis:
   #   image: redis:alpine
