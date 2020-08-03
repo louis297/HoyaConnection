@@ -1,25 +1,27 @@
 import React from 'react';
 import logo from './logo.svg';
-import './App.css';
+import './App.scss';
+import Layout from './component/Layout';
+import { Route } from 'react-router-dom';
+import Home from './component/Home';
+import AuthorizeRoute from './component/login/AuthorizeRoute';
+import Board from './component/Board';
+import { ApplicationPaths } from './component/login/Constrants';
+import ApiAuthorizationRoutes from './component/login/ApiAuthorizationRoutes';
+import AccountLogin from './component/login/AccountLogin';
+import AccountRegister from './component/login/AccountRegister';
+import IdentityManage from './component/login/IdentityManage';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Layout> 
+      <Route exact path='/' component={Home} />
+      {/* <Route path={ApplicationPaths.Login} component={AccountLogin} />
+      <Route path={ApplicationPaths.Register} component={AccountRegister} /> */}
+      {/* <Route path={ApplicationPaths.IdentityManagePath} component={IdentityManage} /> */}
+      <AuthorizeRoute path='/board' component={Board} />
+      <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
+    </Layout>
   );
 }
 
