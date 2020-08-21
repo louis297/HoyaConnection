@@ -17,14 +17,12 @@ services:
   nginx:
     image: nginx:stable-alpine
     ports:
-      # those ports are not directly link to ports in this file
-      # they are defined in the config file of nginx, see docker/nginx/HoyaConnection.conf
       - 8080:80
       - 443:443
     volumes:
       - ./docker/nginx/cache:/var/cache/nginx
       - ./docker/nginx/run:/var/cache/run
-      - ./docker/nginx/HoyaConnection.conf:/etc/nginx/conf.d/default.conf
+      - ./docker/nginx/myrental2.conf:/etc/nginx/conf.d/default.conf
       - ./docker/nginx/nginx.crt:/etc/nginx/nginx.crt
       - ./docker/nginx/nginx.key:/etc/nginx/nginx.key
     links:
@@ -38,17 +36,17 @@ services:
       dockerfile: ./docker/backend/Dockerfile
     environment: 
       - ASPNETCORE_ENVORIONMENT=Development
-      # - ASPNETCORE_URLS=http://+:5000
+      - ASPNETCORE_URLS=http://+:5000
     #   - ASPNETCORE_Kestrel__Certificates__Default__Password=wondering
     #   - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
     # volumes:
-    #   - ./backend/bin/Release/netcoreapp3.1/publish:
+    #   - ./MyRental2/bin/Release/netcoreapp3.1/publish:
     links:
       - postgres
-      # - redis
-    # ports:
-    #   - 5000:5000
-    #   - 5001:5001
+      - redis
+    ports:
+      - 5000:5000
+      - 5001:5001
 
   frontend:
     stdin_open: true
@@ -72,13 +70,13 @@ services:
     environment:
       POSTGRES_USER: louis
       POSTGRES_PASSWORD: DLl8R77ckwLtCN-k=3*T%bh)y,G}FZ#K
-      POSTGRES_DB: HoyaConnection
+      POSTGRES_DB: MyRental2
     ports:
       - 5442:5432
     volumes:
     - ./docker/postgres/data:/var/lib/postgresql
     - ./docker/postgres/init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh
-    # container_name: postgres_db
+    container_name: postgres_db
 
   # redis:
   #   image: redis:alpine

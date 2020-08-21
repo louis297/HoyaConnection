@@ -52,7 +52,7 @@ export class Login extends Component<Iprops, Istate> {
     const action = this.props.action;
     const { message } = this.state;
     if (!!message) {
-      return <div>{message}</div>
+      return <div>{message.toString()}</div>
     } else {
       switch (action) {
         case LoginActions.Login:

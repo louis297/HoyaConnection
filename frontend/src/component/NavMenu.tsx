@@ -42,6 +42,9 @@ export default class NavMenu extends Component<IProps, IState> {
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to='/board'>Board</NavLink>
                 </NavItem>
+                <NavItem>
+                  <NavLink tag={Link} className="text-dark" to='/map'>Map</NavLink>
+                </NavItem>
 
                 <LoginMenu></LoginMenu>
               </ul>

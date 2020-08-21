@@ -19,7 +19,7 @@ export const LoginActions = {
   Register: 'register'
 };
 
-const prefix = '/authentication';
+const prefix = 'authentication';
 const backendPrefix = '/api';
 
 export const ApplicationPaths = {
@@ -28,12 +28,12 @@ export const ApplicationPaths = {
   ApiAuthorizationPrefix: prefix,
   Login: `${prefix}/${LoginActions.Login}`,
   LoginFailed: `${prefix}/${LoginActions.LoginFailed}`,
-  LoginCallback: `${prefix}/${LoginActions.LoginCallback}`,
+  LoginCallback: `localhost:3000/${prefix}/${LoginActions.LoginCallback}`,
   Register: `${prefix}/${LoginActions.Register}`,
   Profile: `${prefix}/${LoginActions.Profile}`,
   Logout: `${prefix}/${LogoutActions.Logout}`,
   LoggedOut: `${prefix}/${LogoutActions.LoggedOut}`,
-  LogoutCallback: `${prefix}/${LogoutActions.LogoutCallback}`,
+  LogoutCallback: `localhost:3000/${prefix}/${LogoutActions.LogoutCallback}`,
   IdentityRegisterPath: `${prefix}/Register`,
   IdentityManagePath: `${prefix}/IdentityAccountManage`
 }

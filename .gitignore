@@ -1,7 +1,3 @@
-# secret
-*.key
-*.crt
-
 # globs
 Makefile.in
 *.userprefs

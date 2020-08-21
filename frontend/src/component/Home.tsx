@@ -6,6 +6,7 @@ export default class Home extends Component {
 
   // test if backend proxy works
   componentDidMount(){
+    document.title='HoyaConnection';
     console.log('abc');
     axios.get('/api/weatherforecast').then( r => {console.log(r)});
   }
