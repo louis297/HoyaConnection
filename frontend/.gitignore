@@ -2,6 +2,9 @@
 
 /.vscode
 
+# secret
+/src/component/map/GoogleMapApiKey.*
+
 # dependencies
 /node_modules
 /.pnp

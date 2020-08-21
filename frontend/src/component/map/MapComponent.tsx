@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
 import { MockMapData } from './MockMapData';
 import { Container, Row, Col, ListGroup, ListGroupItem, Collapse  } from 'reactstrap';
+import GoogleMapApiKey from './GoogleMapApiKey';
 
 import './Map.scss';
 
@@ -120,7 +121,7 @@ export default function MapComponent() {
         </Col>
         <Col xs="12" lg="9">
           <LoadScript
-            googleMapsApiKey="AIzaSyDmYBn8Y5_YdQw0ZKcYxQH7RAByEhaTomw"
+            googleMapsApiKey={GoogleMapApiKey}
           >
             <GoogleMap
               mapContainerStyle={containerStyle}
