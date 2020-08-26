@@ -38,6 +38,11 @@
   width: 150px;
 }
 
-.SidePanelUserName {
+.MapSidePanel {
+  height: 80vh;
+  overflow-y: scroll;
+}
+
+.MapSidePanel .SidePanelUserName {
   color: steelblue;
 }

@@ -9,23 +9,27 @@ import './Map.scss';
 export default function MapComponent() {
   const [map, setMap] = React.useState(null);
   const [center, setCenter] = React.useState({ lat: -36.852019, lng: 174.763853 });
-  const [ selected, setSelected ] = React.useState({});
+  const [ selectedEvent, setSelectedEvent ] = React.useState({} as any);
   const [mapData, setMapData] = React.useState(MockMapData);
   document.title='Map View';
   // initial userEventListCollapse
-  let tempUserEventListCollapse = new Map<string, boolean>();
-  mapData.map( (user:any) => {
-    tempUserEventListCollapse.set(user.userID, false);
-  })
-  const [userEventListCollapse, setUserEventListCollapse] = React.useState(tempUserEventListCollapse);
-  const [selectedUser, setSelectedUser] = React.useState();
+  // let tempUserEventListCollapse = new Map<string, boolean>();
+  // mapData.map( (user:any) => {
+  //   tempUserEventListCollapse.set(user.userID, false);
+  // })
+  // const [userEventListCollapse, setUserEventListCollapse] = React.useState(tempUserEventListCollapse);
+  // const [selectedUser, setSelectedUser] = React.useState();
   
   // React.useEffect( () => {
 
   // });
 
   const onSelect = (item:any) => {
-    setSelected(item);
+    if(selectedEvent === item){
+      setSelectedEvent({});
+    } else {
+      setSelectedEvent(item);
+    }
   }
 
   const onLoad = React.useCallback(function callback(map) {
@@ -38,14 +42,14 @@ export default function MapComponent() {
     setMap(null)
   }, [])
 
-  const toggleUserEventList = (userID: string) => {
-    tempUserEventListCollapse = new Map<string, boolean>();
-    mapData.map( (user:any) => {
-      tempUserEventListCollapse.set(user.userID, false);
-    })
-    tempUserEventListCollapse.set(userID, !userEventListCollapse.get(userID));
-    setUserEventListCollapse(tempUserEventListCollapse);
-  };
+  // const toggleUserEventList = (userID: string) => {
+  //   tempUserEventListCollapse = new Map<string, boolean>();
+  //   mapData.map( (user:any) => {
+  //     tempUserEventListCollapse.set(user.userID, false);
+  //   })
+  //   tempUserEventListCollapse.set(userID, !userEventListCollapse.get(userID));
+  //   setUserEventListCollapse(tempUserEventListCollapse);
+  // };
 
   const containerStyle = {
     width: '100%',
@@ -54,46 +58,50 @@ export default function MapComponent() {
 
   const getMarkers = () => {
     let markers:any = []
-    mapData.forEach((user: any) => {
-      user.userEvents.forEach((event: any, index: number) => {
+    mapData.forEach((event: any) => {
         markers.push(<Marker
           position={event.location}
           key={event.eventID}
           onClick={() => onSelect(event)}
         ></Marker>);
-      })
     })
     return markers;
   }
 
   const getMarkerInfo = () => {
-    return (selected as any).location && 
+    return (selectedEvent as any).location && 
       (
         <InfoWindow
-        position={(selected as any).location}
+        position={(selectedEvent as any).location}
         // clickable={true}
-        onCloseClick={() => setSelected({})}
+        onCloseClick={() => setSelectedEvent({})}
       >
         <>
-        <h4>{(selected as any).eventTitle}</h4>
-        <p>{(selected as any).detail}</p>
-        <p>{(selected as any).address}</p>
-        <p>{(selected as any).startTime}</p>
-        <p>{(selected as any).eventLength}</p>
+          <h4>{(selectedEvent as any).eventTitle}</h4>
+          <p>{(selectedEvent as any).userName}</p>
+          <p>{(selectedEvent as any).detail}</p>
+          <p>{(selectedEvent as any).address}</p>
+          <p>{(selectedEvent as any).startTime}</p>
+          <p>{(selectedEvent as any).eventLength}</p>
         </>
       </InfoWindow>
       )
   }
 
+  // TODO:  
+  const getUserInfo = (userID: string) => {
+    console.log(`Get user info: userID = ${userID}`);
+  }
+
   const MapSidePanel = (    
-  <div>
+  <div className="MapSidePanel">
     <h1>Events</h1>
     <Container>
-      {mapData.map( (user:any) => {
+      {mapData.map( (event:any) => {
         return (
           <ListGroup>
-            <ListGroupItem key={user.userID}>
-              <div className="SidePanelUserName" onClick={() => toggleUserEventList(user.userID)}>{user.userName}</div>
+            <ListGroupItem key={event.userID}>
+              {/* <div className="SidePanelUserName" onClick={() => toggleUserEventList(user.userID)}>{user.userName}</div>
               <Collapse isOpen={userEventListCollapse.get(user.userID)}>
                 {user.userEvents.map( (event:any) => {
                   return (
@@ -104,7 +112,9 @@ export default function MapComponent() {
                     </ListGroup>
                   )
                 })}
-              </Collapse>
+              </Collapse> */}
+              <p className="SidePanelUserName" onClick={() => getUserInfo(event.userID)}>{event.userName}</p>
+              <p onClick={() => onSelect(event)}>{event.eventTitle}</p>
             </ListGroupItem>
           </ListGroup>
         )
@@ -139,80 +149,3 @@ export default function MapComponent() {
     </div>
   )
 }
-
-
-
-// interface IProps {
-// }
-
-// interface IState {
-//   map:any;
-// }
-
-// class Map1 extends Component<IProps, IState> {
-
-//   componentDidMount(){
-//     this.generateMap(MockMapData);
-//   }
-
-//   render() {
-//     const initLocation = {
-//       lat: -36.852019, 
-//       lng: 174.763853
-//     };
-//     // const onLoad = React.useCallback(function callback(map) {
-//     //   const bounds = new (window as any).google.maps.LatLngBounds();
-//     //   map.fitBounds(bounds);
-//     //   this.state = {};
-//     // }, [])
-   
-//     // const onUnmount = React.useCallback(function callback(map) {
-//     //   setMap(null)
-//     // }, [])
-
-//     return (
-//       <div>
-//         <h1>Map here</h1>
-//         <LoadScript
-//           googleMapsApiKey="AIzaSyDmYBn8Y5_YdQw0ZKcYxQH7RAByEhaTomw"
-//         >
-//           <GoogleMap
-//             // mapContainerStyle={containerStyle}
-//             center={initLocation}
-//             zoom={10}
-//             // onLoad={onLoad}
-//             // onUnmount={onUnmount}
-//           >
-//             { /* Child components, such as markers, info windows, etc. */ }
-//             <></>
-//           </GoogleMap>
-//         </LoadScript>
-//       </div>
-//     )
-//   }
-  
-
-//   generateMap(MockMapData: any) {
-
-//     // this.tt = tt;
-//     // const map = tt.map({
-//     //   key: 'DGoWXXfdz3OPX3c5RGikiQRV5OkBGdFH',
-//     //   style: 'tomtom://vector/1/basic-main',
-//     //   container: 'map',
-//     //   center: {lat: -36.852019, lng: 174.763853},
-//     //   zoom: 11,
-//     // });
-//     // map.addControl(new tt.FullscreenControl());
-//     // this.map = map;
-//     // this.generatePanel(MockMapData);
-//     // this.generateMarker(MockMapData);
-//   }
-
-//   generatePanel(MockMapData: any){
-
-//   }
-
-//   generateMarker(MockMapData: any){
-
-//   }
-// }
